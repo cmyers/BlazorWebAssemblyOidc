@@ -4,4 +4,4 @@ Blazor Web Assembly / Wasm app testing external authentication with the Identity
 
 Demo
 
-https://radiant-mesa-65236.herokuapp.com/
+https://radiant-mesa-65236.herokuapp.com
