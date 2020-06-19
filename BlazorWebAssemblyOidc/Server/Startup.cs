@@ -7,6 +7,7 @@ using BlazorWebAssemblyOidc.Shared.Interfaces;
 using BlazorWebAssemblyOidc.Shared.Services;
 using BlazorWebAssemblyOidc.Shared.Repositories;
 using IdentityServer4.AccessTokenValidation;
+using Microsoft.OpenApi.Models;
 
 namespace BlazorWebAssemblyOidc.Server
 {
@@ -26,6 +27,11 @@ namespace BlazorWebAssemblyOidc.Server
             services.AddAuthorization(options =>
             {
                 options.AddPolicy("Resource.API.Test", builder => builder.RequireClaim("aud", "api"));
+            });
+
+            services.AddSwaggerGen(c =>
+            {
+                c.SwaggerDoc("v1", new OpenApiInfo { Title = "API", Version = "v1" });
             });
 
             services.AddAuthentication()
@@ -62,6 +68,13 @@ namespace BlazorWebAssemblyOidc.Server
             app.UseHttpsRedirection();
             app.UseBlazorFrameworkFiles();
             app.UseStaticFiles();
+            app.UseSwagger();
+
+            app.UseSwaggerUI(c =>
+            {
+                c.SwaggerEndpoint("/swagger/v1/swagger.json", "API V1");
+            });
+
 
             app.UseRouting();
 

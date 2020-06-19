@@ -3,8 +3,8 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using BlazorWebAssemblyOidc.Shared.Interfaces;
-using BlazorWebAssemblyOidc.Shared.Models;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
+using BlazorWebAssemblyOidc.Shared.ApiClients;
 
 namespace BlazorWebAssemblyOidc.Server.Controllers
 {

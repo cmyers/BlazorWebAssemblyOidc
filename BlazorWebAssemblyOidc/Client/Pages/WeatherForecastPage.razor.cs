@@ -1,18 +1,18 @@
-﻿using BlazorWebAssemblyOidc.Shared.Models;
-using Microsoft.AspNetCore.Components;
+﻿using Microsoft.AspNetCore.Components;
 using System;
 using System.Net.Http;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Components.WebAssembly.Authentication;
 using Microsoft.AspNetCore.Authorization;
-using System.Net.Http.Json;
+using BlazorWebAssemblyOidc.Shared.ApiClients;
+using System.Collections.Generic;
 
 namespace BlazorWebAssemblyOidc.Client.Pages
 {
     [Authorize]
     public class WeatherForecastPageBase : ComponentBase
     {
-        protected WeatherForecast[] forecasts;
+        protected ICollection<WeatherForecast> forecasts;
         protected string error;
 
         [Inject]
@@ -23,26 +23,31 @@ namespace BlazorWebAssemblyOidc.Client.Pages
 
         protected override async Task OnInitializedAsync()
         {
-            var httpClient = new HttpClient();
-            httpClient.BaseAddress = new Uri(Navigation.BaseUri);
+            
 
             var tokenResult = await AuthenticationService.RequestAccessToken();
 
-            if (tokenResult.TryGetToken(out var token))
+            using (var httpClient = new HttpClient())
             {
-                try
+                httpClient.BaseAddress = new Uri(Navigation.BaseUri);
+                
+                if (tokenResult.TryGetToken(out var token))
                 {
-                    httpClient.DefaultRequestHeaders.Add("Authorization", $"Bearer {token.Value}");
-                    forecasts = await httpClient.GetFromJsonAsync<WeatherForecast[]>("api/WeatherForecast");
+                    try
+                    {
+                        httpClient.DefaultRequestHeaders.Add("Authorization", $"Bearer {token.Value}");
+                        var weatherForecastApiClient = new WeatherForecastApiClient(Navigation.BaseUri, httpClient);
+                        forecasts = await weatherForecastApiClient.WeatherForecastAsync();
+                    }
+                    catch (HttpRequestException exception)
+                    {
+                        error = exception.Message;
+                    }
                 }
-                catch (HttpRequestException exception)
+                else
                 {
-                    error = exception.Message;
+                    Navigation.NavigateTo(tokenResult.RedirectUrl);
                 }
-            }
-            else
-            {
-                Navigation.NavigateTo(tokenResult.RedirectUrl);
             }
         }
     }

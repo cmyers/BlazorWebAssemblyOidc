@@ -20,7 +20,7 @@ namespace BlazorWebAssemblyOidc.Client
             builder.Services.AddOidcAuthentication(options =>
             {
                 options.ProviderOptions.Authority = "https://demo.identityserver.io/";
-                options.ProviderOptions.ClientId = "spa";
+                options.ProviderOptions.ClientId = "interactive.public";
                 options.ProviderOptions.ResponseType = "code";
                 options.ProviderOptions.DefaultScopes.Add("openid");
                 options.ProviderOptions.DefaultScopes.Add("profile");
