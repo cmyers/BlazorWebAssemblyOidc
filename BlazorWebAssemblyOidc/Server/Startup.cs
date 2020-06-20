@@ -8,6 +8,7 @@ using BlazorWebAssemblyOidc.Shared.Services;
 using BlazorWebAssemblyOidc.Shared.Repositories;
 using IdentityServer4.AccessTokenValidation;
 using Microsoft.OpenApi.Models;
+using System;
 
 namespace BlazorWebAssemblyOidc.Server
 {
@@ -40,6 +41,7 @@ namespace BlazorWebAssemblyOidc.Server
                     options.Authority = "https://demo.identityserver.io/";
                     options.RequireHttpsMetadata = true;
                     options.ApiName = "api";
+                    options.JwtValidationClockSkew = TimeSpan.Zero;
                 });
 
             services.AddTransient<IWeatherForecastService, WeatherForecastService>();
