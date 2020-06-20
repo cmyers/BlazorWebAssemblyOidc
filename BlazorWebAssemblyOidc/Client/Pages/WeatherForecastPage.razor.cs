@@ -23,15 +23,12 @@ namespace BlazorWebAssemblyOidc.Client.Pages
 
         protected override async Task OnInitializedAsync()
         {
-            
-
             var tokenResult = await AuthenticationService.RequestAccessToken();
 
-            using (var httpClient = new HttpClient())
+            if (tokenResult.TryGetToken(out var token))
             {
-                httpClient.BaseAddress = new Uri(Navigation.BaseUri);
-                
-                if (tokenResult.TryGetToken(out var token))
+
+                using (var httpClient = new HttpClient())
                 {
                     try
                     {
@@ -44,10 +41,10 @@ namespace BlazorWebAssemblyOidc.Client.Pages
                         error = exception.Message;
                     }
                 }
-                else
-                {
-                    Navigation.NavigateTo(tokenResult.RedirectUrl);
-                }
+            }
+            else
+            {
+                Navigation.NavigateTo(tokenResult.RedirectUrl);
             }
         }
     }
