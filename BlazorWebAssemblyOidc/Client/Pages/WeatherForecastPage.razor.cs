@@ -36,7 +36,7 @@ namespace BlazorWebAssemblyOidc.Client.Pages
                         var weatherForecastApiClient = new WeatherForecastApiClient(Navigation.BaseUri, httpClient);
                         forecasts = await weatherForecastApiClient.WeatherForecastAsync();
                     }
-                    catch (HttpRequestException exception)
+                    catch (ApiException exception)
                     {
                         error = exception.Message;
                     }
