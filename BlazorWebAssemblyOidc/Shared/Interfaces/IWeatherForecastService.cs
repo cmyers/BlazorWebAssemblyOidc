@@ -1,4 +1,4 @@
-﻿using BlazorWebAssemblyOidc.Shared.ApiClients;
+﻿using BlazorWebAssemblyOidc.Shared.Models;
 using System.Collections.Generic;
 
 namespace BlazorWebAssemblyOidc.Shared.Interfaces
