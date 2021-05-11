@@ -4,7 +4,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using BlazorWebAssemblyOidc.Shared.Interfaces;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
-using BlazorWebAssemblyOidc.Shared.ApiClients;
+using BlazorWebAssemblyOidc.Shared.Models;
 
 namespace BlazorWebAssemblyOidc.Server.Controllers
 {

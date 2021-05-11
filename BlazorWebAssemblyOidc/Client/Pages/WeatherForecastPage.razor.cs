@@ -4,8 +4,9 @@ using System.Net.Http;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Components.WebAssembly.Authentication;
 using Microsoft.AspNetCore.Authorization;
-using BlazorWebAssemblyOidc.Shared.ApiClients;
 using System.Collections.Generic;
+using System.Net.Http.Json;
+using BlazorWebAssemblyOidc.Shared.Models;
 
 namespace BlazorWebAssemblyOidc.Client.Pages
 {
@@ -32,11 +33,11 @@ namespace BlazorWebAssemblyOidc.Client.Pages
                 {
                     try
                     {
+                        httpClient.BaseAddress = new Uri(Navigation.BaseUri);
                         httpClient.DefaultRequestHeaders.Add("Authorization", $"Bearer {token.Value}");
-                        var weatherForecastApiClient = new WeatherForecastApiClient(Navigation.BaseUri, httpClient);
-                        forecasts = await weatherForecastApiClient.WeatherForecastAsync();
+                        forecasts = await httpClient.GetFromJsonAsync<WeatherForecast[]>("api/WeatherForecast");
                     }
-                    catch (ApiException exception)
+                    catch (HttpRequestException exception)
                     {
                         error = exception.Message;
                     }
